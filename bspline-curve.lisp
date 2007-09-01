@@ -148,8 +148,7 @@ sequence of parameters."
   (let ((d1 (bsc-evaluate curve u :derivative 1))
 	(d2 (bsc-evaluate curve u :derivative 2)))
     (if (= (bsc-dimension curve) 2)
-	(safe-/ (scalar-product (2d->3d d1)
-				(2d->3d (list (- (second d2)) (first d2))))
+	(safe-/ (scalar-product d1 (list (- (second d2)) (first d2)))
 		(expt (vlength d1) 3))
 	(safe-/ (vlength (cross-product d1 d2)) (expt (vlength d1) 3)))))
 

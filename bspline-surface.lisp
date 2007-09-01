@@ -131,9 +131,9 @@ TODO: Slow (but easy) implementation that uses BSPLINE-CURVE's EVALUATE."
 							    (second knots)
 							    v-points)))))
 	    (setf (elt u-points i)
-		  (bss-evaluate curve (second uv)
+		  (bsc-evaluate curve (second uv)
 				:derivative (second derivative))))
-      (bss-evaluate (make-bspline-curve u-degree (first knots) u-points)
+      (bsc-evaluate (make-bspline-curve u-degree (first knots) u-points)
 		    (first uv) :derivative (first derivative)))))
 
 

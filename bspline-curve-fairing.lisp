@@ -71,7 +71,7 @@ The first and last values can be fixed through START-VALUE and END-VALUE."
 					   (butlast curvatures 2)
 					   (rest (rest curvatures)))
 				   (last curvatures)))
-	  finally (return (coerce curvatures 'vector)))))
+	  (finally (return (coerce curvatures 'vector))))))
 
 (defun integrate (curve parameters curvatures distance &key from-right)
   "Euler-integration at PARAMETERS of CURVE,using CURVATURES
