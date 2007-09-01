@@ -1,0 +1,3 @@
+- other file formats (BSS, SGF, etc.)
+- speedup, code optimization
+- display with OpenGL (cl-opengl?)

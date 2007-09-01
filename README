@@ -1,0 +1,13 @@
+CL-NURBS Library
+
+Loading the library should be as simple as:
+  (asdf:operate 'asdf:load-op :cl-nurbs)
+Or, under SBCL:
+  (require :cl-nurbs)
+
+There is no documentation yet, sorry (though most functions should be
+self-explanatory).
+
+Any comments, suggestions, patches are welcome.
+
+Peter Salvi <vukung@yahoo.com>
