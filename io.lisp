@@ -62,10 +62,10 @@ a list of newly created objects."
 (defun write-bss (surface filename)
   'TODO)
 
-(defparameter *ps-width* 500
-  "Width of the drawable area in WRITE-PS.")
+(define-constant +ps-width+ 595 "A4 paper width.")
+(define-constant +ps-height+ 841 "A4 paper height.")
 
-(defparameter *ps-margin* 48
+(defparameter *ps-margin* 20
   "Margin of the paper used by WRITE-PS.")
 
 (defparameter *ps-comb-scale* 40
@@ -104,7 +104,7 @@ a list of newly created objects."
 	(for i from 0 below resolution)
 	(for u = (+ lower (* step i)))
 	(for begin = (funcall convert (bsc-evaluate curve u)))
-	(for end = (v+ begin (v* (2d-normal curve u)
+	(for end = (v+ begin (v* (bsc-2d-normal curve u)
 				 (abs (bsc-curvature curve u)) comb-scale)))
 	(format stream " ~f ~f moveto~% ~f ~f lineto~% ~f ~f moveto~%"
 		(first begin) (second begin) (first end)
@@ -116,8 +116,12 @@ a list of newly created objects."
   (format stream "newpath~% 0.0 1.0 0.0 setrgbcolor~%")
   (iter (for i from 0 below (length parameters))
 	(for begin = (funcall convert (bsc-evaluate curve (elt parameters i))))
-	(for end = (v+ begin (v* (2d-normal curve (elt parameters i))
-				 (abs (elt target i)) comb-scale)))
+	(for u = (elt parameters i))
+	(for normal = (bsc-2d-normal curve u))
+	(for curvature = (bsc-curvature curve u))
+	(for targeted = (elt target i))
+	(for end = (v+ begin (v* normal targeted comb-scale
+				 (if (> (* curvature targeted) 0) 1 -1))))
 	(for command first "moveto" then "lineto")
 	(format stream " ~f ~f ~a~%" (first end) (second end) command))
   (format stream "stroke~%"))
@@ -135,11 +139,19 @@ a list of newly created objects."
 		 end-curvature (iteration 100) left-right distance blended
 		 scaling margin (comb-scale *ps-comb-scale*))
   (let* ((bbox (bsc-bounding-box curve))
-	 (scaling (or scaling (/ *ps-width* (- (caadr bbox) (caar bbox)))))
+	 (width (- (caadr bbox) (caar bbox)))
+	 (height (- (cadadr bbox) (cadar bbox)))
+	 (lower-left (car bbox))
 	 (margin (or margin (list *ps-margin* *ps-margin*)))
+	 (scaling (or scaling (min (/ (- +ps-width+ (* (first margin) 2))
+				      width)
+				   (/ (- +ps-height+ (* (second margin) 2))
+				      height))))
+	 (margin (list (first margin) (- +ps-height+ (second margin)
+					 (* height scaling))))
 	 parameters target left right)
     (with-open-file (s filename :direction :output :if-exists :supersede)
-      (flet ((convert (p) (v+ (v* p scaling) margin)))
+      (flet ((convert (p) (v+ (v* (v- p lower-left) scaling) margin)))
 	(format s "%!PS~%")
 	(when control-points
 	  (write-ps-control-points curve s #'convert))
