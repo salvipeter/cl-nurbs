@@ -102,7 +102,7 @@ a list of newly created objects."
 	(for u = (+ lower (* step i)))
 	(for begin = (funcall convert (bsc-evaluate curve u)))
 	(for end = (v+ begin (v* (bsc-2d-normal curve u)
-				 (abs (bsc-curvature curve u)) comb-scale)))
+				 (bsc-curvature curve u) comb-scale)))
 	(format stream " ~f ~f moveto~% ~f ~f lineto~% ~f ~f moveto~%"
 		(first begin) (second begin) (first end)
 		(second end) (first begin) (second begin)))

@@ -128,14 +128,14 @@ TODO: Should return the list of derivatives from 0 to DERIVATIVE."
   "Normal vector of a 2-dimensional B-spline curve."
   (let* ((d1 (append (bsc-evaluate curve u :derivative 1) '(0)))
 	 (d2 (append (bsc-evaluate curve u :derivative 2) '(0)))
-	 (n (cross-product (cross-product d1 d2) d1)))
+	 (n (cross-product (cross-product d2 d1) d1)))
     (vnormalize (list (first n) (second n)))))
 
 (defun bsc-out-direction (curve u)
   "Outward direction on the osculating plane at U for a 3-dimensional spline."
   (let ((d1 (bsc-evaluate curve u :derivative 1))
 	(d2 (bsc-evaluate curve u :derivative 2)))
-    (vnormalize (cross-product (cross-product d1 d2) d1))))
+    (vnormalize (cross-product (cross-product d2 d1) d1))))
 
 (defun bsc-out-direction-on-parameters (curve parameters)
   "Convenience function for calculating outward direction on a
