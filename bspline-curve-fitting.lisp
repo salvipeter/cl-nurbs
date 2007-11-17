@@ -58,12 +58,13 @@ The arrays are freed in the end."
 					(double-array->vector points np))
 				      dimension))))
 
-(defun uniform-parameter-points (points)
+(defun uniform-parameter-points (points &optional (start 0.0) (end 1.0))
   "Returns a list of the form (P1 X1 Y1... P2 X2 Y2... P3...),
-where P1...PN are equidistant points of the [0, 1] interval."
-  (let ((n (length points)))
+where P1...PN are equidistant points of the [START, END] interval."
+  (let ((n (length points))
+	(len (- end start)))
     (iter (for i from 0 below n)
-	  (for ppts = (append ppts (list (/ i (1- n)))
+	  (for ppts = (append ppts (list (+ (/ (* len i) (1- n)) start))
 			      (copy-list (elt points i))))
 	  (finally (return ppts)))))
 
