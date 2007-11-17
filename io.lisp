@@ -59,9 +59,6 @@ a list of newly created objects."
 	  (while obj)
 	  (collect (create-object (first obj) (rest obj))))))
 
-(defun write-bss (surface filename)
-  'TODO)
-
 (define-constant +ps-width+ 595 "A4 paper width.")
 (define-constant +ps-height+ 841 "A4 paper height.")
 

@@ -97,8 +97,9 @@ CURVE by LENGTH units along the z axis."
   (with-accessors ((net control-net))
       surface
     (let* ((pts (iter (for j from 0 below (array-dimension net 1))
-		      (append (iter (for i from 0 below (array-dimension net 0))
-				    (collect (aref net i j))))))
+		      (appending
+		       (iter (for i from 0 below (array-dimension net 0))
+			     (collect (aref net i j))))))
 	   (lst (apply #'mapcar #'list pts)))
       (list (mapcar #'(lambda (x) (apply #'min x)) lst)
 	    (mapcar #'(lambda (x) (apply #'max x)) lst)))))
