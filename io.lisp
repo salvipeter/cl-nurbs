@@ -117,8 +117,7 @@ a list of newly created objects."
 	(for normal = (bsc-2d-normal curve u))
 	(for curvature = (bsc-curvature curve u))
 	(for targeted = (elt target i))
-	(for end = (v+ begin (v* normal targeted comb-scale
-				 (if (> (* curvature targeted) 0) 1 -1))))
+	(for end = (v+ begin (v* normal targeted comb-scale)))
 	(for command first "moveto" then "lineto")
 	(format stream " ~f ~f ~a~%" (first end) (second end) command))
   (format stream "stroke~%"))

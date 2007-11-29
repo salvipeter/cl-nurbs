@@ -98,9 +98,9 @@ TODO: Slow because of unncecessary evaluations."
 				  (min (sqr (/ (vlength deviation) distance))
 				       1.0))))
 	    (for last-offset = (v* (elt outward (flip i))
-				   (* (elt curvatures (flip i)) step)))
+				   (elt curvatures (flip i)) step))
 	    (setf (elt result (1+ i)) (v+ (elt result i) offset)
-		  last (v+ last last-offset))
+		  last (vnormalize (v+ last last-offset)))
 	    (finally (return result))))))
 
 ;; (defun blend-function (x)

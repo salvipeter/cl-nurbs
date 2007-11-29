@@ -91,7 +91,7 @@ POINTS should be a sequence of points."
         (gcf-set-closed gcf nil)
         (gcf-set-smoothness-functional gcf :smf-crv)
         (gcf-set-optimize-parameters gcf nil)
-        (gcf-set-knot-vector gcf (length knots) knot-array)
+;;         (gcf-set-knot-vector gcf (length knots) knot-array)
         (gcf-set-start-point gcf start-point)
         (gcf-set-end-point gcf end-point)
         (unwind-protect

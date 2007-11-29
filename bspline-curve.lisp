@@ -126,10 +126,8 @@ TODO: Should return the list of derivatives from 0 to DERIVATIVE."
 
 (defun bsc-2d-normal (curve u)
   "Normal vector of a 2-dimensional B-spline curve."
-  (let* ((d1 (append (bsc-evaluate curve u :derivative 1) '(0)))
-	 (d2 (append (bsc-evaluate curve u :derivative 2) '(0)))
-	 (n (cross-product (cross-product d2 d1) d1)))
-    (vnormalize (list (first n) (second n)))))
+  (let ((d (bsc-evaluate curve u :derivative 1)))
+    (vnormalize (list (second d) (- (first d))))))
 
 (defun bsc-out-direction (curve u)
   "Outward direction on the osculating plane at U for a 3-dimensional spline."
