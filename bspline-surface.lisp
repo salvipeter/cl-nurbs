@@ -193,7 +193,7 @@ TODO: Slow (but easy) implementation that uses BSPLINE-CURVE's EVALUATE."
 	 (L (scalar-product normal der-10))
 	 (M (scalar-product normal der-11))
 	 (N (scalar-product normal der-12)))
-    (safe-/ (+ (* N E) (* -2 M F) (* L G)) (- (* E G) (* F F)))))
+    (safe-/ (+ (* N E) (* -2 M F) (* L G)) (* 2 (- (* E G) (* F F))))))
 
 ;; (defun insert-knot-u (bspline-surface u)
 ;; "Inserts the not U into the knot vector of SURFACE."
