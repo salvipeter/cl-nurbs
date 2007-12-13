@@ -26,7 +26,7 @@
 	       (:file "bspline-surface-fairing"
 		      :depends-on ("bspline-surface"))
 	       (:file "bspline-surface-fitting"
-		      :depends-on ("bspline-surface"))
+		      :depends-on ("bspline-curve-fitting" "bspline-surface"))
 	       (:file "bspline-surface-continuity"
 		      :depends-on ("bspline-surface"))
 	       (:file "io" :depends-on ("bspline-curve-fairing"
