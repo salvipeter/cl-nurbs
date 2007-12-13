@@ -121,7 +121,8 @@ TODO: Slow because of unncecessary evaluations."
 		(affine-combine (elt left i) alpha (elt right i)))
 	  (finally (return result)))))
 
-(defun bsc-faired-polygon (curve resolution iteration distance &key from to)
+(defun bsc-faired-polygon (curve resolution iteration distance
+			   &key from to start-curvature end-curvature)
   "Fairs the [FROM, TO] interval of CURVE. The number of
 resulting points is based on RESOLUTION; the target curvature is averaged
 ITERATION times and the deviation of the points is constrained to be less
@@ -130,7 +131,9 @@ Results in RESOLUTION points."
   (let* ((from (or from (bsc-lower-parameter curve)))
 	 (to (or to (bsc-upper-parameter curve)))
 	 (parameters (arc-length-sampling curve from to resolution))
-	 (curvatures (target-curvature curve parameters iteration))
+	 (curvatures (target-curvature curve parameters iteration
+				       :start-value start-curvature
+				       :end-value end-curvature))
 	 (left (integrate curve parameters curvatures distance :from-right nil))
 	 (right (integrate curve parameters curvatures distance :from-right t)))
     (blend-points left (nreverse right))))
