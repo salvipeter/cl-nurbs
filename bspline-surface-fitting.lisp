@@ -4,16 +4,21 @@
 
 ;; Fitting
 
-(defun uniform-parameter-points-2d (points)
+(defun uniform-parameter-points-2d (points &optional
+				    (start-u 0.0) (end-u 1.0)
+				    (start-v 0.0) (end-v 1.0))
   "Returns a list of the form (U1 V1 X1 Y1 Z1 U2 V2 X2...),
-where U1...UN and V1...VN are equidistant points of the [0, 1] interval."
+where U1..UN/V1..VN are equidistant points of the [(U1,V1), (U2,V2)] interval."
   (let ((n (array-dimension points 0))
-	(m (array-dimension points 1)))
+	(m (array-dimension points 1))
+	(len-u (- end-u start-u))
+	(len-v (- end-v start-v)))
     (iter (for i from 0 below n)
 	  (with ppts)
 	  (iter (for j from 0 below m)
 		(setf ppts (append ppts
-				   (list (/ i (1- n)) (/ j (1- m)))
+				   (list (+ (/ (* len-u i) (1- n)) start-u)
+					 (+ (/ (* len-v j) (1- m)) start-v))
 				   (copy-list (aref points i j)))))
 	  (finally (return ppts)))))
 

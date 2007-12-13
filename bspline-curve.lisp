@@ -209,7 +209,9 @@ sequence of parameters."
 ;;     (0.538469 0.478629) (0.906180 0.236927))
 ;;   "Five-point Gaussian quadrature.")
 
-(defun bsc-estimate-arc-length (curve from to)
+(defun bsc-estimate-arc-length (curve &optional
+				(from (bsc-lower-parameter curve))
+				(to (bsc-upper-parameter curve)))
   "Estimates the arc length of CURVE in the
 [FROM, TO] parameter interval, using Gaussian quadratures."
   (if (>= from to)
