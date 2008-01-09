@@ -133,7 +133,7 @@ TODO: Should return the list of derivatives from 0 to DERIVATIVE."
   "Outward direction on the osculating plane at U for a 3-dimensional spline."
   (let ((d1 (bsc-evaluate curve u :derivative 1))
 	(d2 (bsc-evaluate curve u :derivative 2)))
-    (vnormalize (cross-product (cross-product d2 d1) d1))))
+    (vnormalize (cross-product (cross-product d1 d2) d1))))
 
 (defun bsc-out-direction-on-parameters (curve parameters)
   "Convenience function for calculating outward direction on a
