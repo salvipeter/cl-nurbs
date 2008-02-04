@@ -9,6 +9,7 @@
 	   :point-distance :affine-combine :interpolate
            ;; B-Spline Curves
 	   :make-bspline-curve :copy-bspline-curve
+	   :degree :knot-vector :control-points
 	   :bsc-dimension
 	   :bsc-lower-parameter :bsc-upper-parameter
 	   :bsc-bounding-box :bsc-bounding-box-axis
@@ -26,6 +27,7 @@
 	   :bsc-extrude
 	   ;; B-Spline Surfaces
 	   :make-bspline-surface :copy-bspline-surface
+	   :degrees :knot-vectors :control-net
 	   :bss-lower-parameter :bss-upper-parameter
 	   :bss-bounding-box
 	   :bss-evaluate
