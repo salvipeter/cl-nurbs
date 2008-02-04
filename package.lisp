@@ -43,4 +43,6 @@
 	   :read-rbn
 	   :write-bss
 	   :write-ps
-	   :write-vtk))
+	   :write-vtk
+	   :write-points-vtk
+	   :write-points2-vtk))
