@@ -33,6 +33,7 @@
 	   :bss-evaluate
 	   :bss-surface-normal
 	   :bss-principal-curvatures :bss-gaussian-curvature :bss-mean-curvature
+	   :bss-insert-knot
 	   :bss-knot-removal-reinsertion
 	   :bss-construction-curve :bss-get-surface-curve
 	   :bss-faired-mesh
