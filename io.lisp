@@ -8,6 +8,12 @@
   (:documentation "Writes OBJ to FILENAME in RBN format.
 Uses the IF-EXISTS parameter as in WITH-OPEN-FILE."))
 
+(defmethod write-rbn ((lst cons) filename &key (if-exists :supersede))
+  (write-rbn (first lst) filename :if-exists if-exists)
+  (dolist (obj (rest lst))
+    (write-rbn obj filename :if-exists :append))
+  t)
+
 (defmethod write-rbn ((curve bspline-curve) filename
 		      &key (if-exists :supersede))
   (with-open-file (s filename :direction :output :if-exists if-exists)
