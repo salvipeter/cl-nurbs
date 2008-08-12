@@ -163,7 +163,9 @@ TODO: Slow (but easy) implementation that uses BSPLINE-CURVE's EVALUATE."
 	 (g (* 2 (- (* L N) (* M M))))
 	 (a (* 2 (- (* E G) (* F F))))
 	 (d (sqrt (- (* m m) (* a g)))))
-    (list (/ (+ m d) a) (/ (- m d) a))))
+    (if (complexp d)			; computation error (umbilical point)
+	(list (/ m a) (/ m a))
+	(list (/ (+ m d) a) (/ (- m d) a)))))
 
 (defun bss-gaussian-curvature (surface uv)
   (let* ((der-00 (bss-evaluate surface uv :derivative '(1 0)))

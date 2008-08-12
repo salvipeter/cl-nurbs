@@ -1,3 +1,4 @@
+- better IO routines (esp. for PS)
 - other file formats (STL etc.)
 - speedup, code optimization
 - display with OpenGL (cl-opengl?)
