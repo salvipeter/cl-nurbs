@@ -40,10 +40,10 @@
 	   :bss-fit
 	   :bss-continuous-surface
 	   ;; I/O
-	   :write-rbn
-	   :read-rbn
+	   :write-rbn :read-rbn
 	   :write-bss
 	   :write-ps
+	   :write-pts :read-pts
 	   :write-vtk
 	   :write-points-vtk
 	   :write-points2-vtk))
