@@ -305,76 +305,70 @@ Translation of the algorithm in the NURBS Book, pp. 155."
       (bss-insert-knot-u surface knot)
       (bss-insert-knot-v surface knot)))
 
-;; (defun split-surface-u (bspline-surface u)
-;;   (let ((surface bspline-surface)
-;; 	(degrees (degrees bspline-surface)))
-;;     (loop repeat (- (first degrees)
-;; 		    (count u (first (knot-vectors bspline-surface)))) do
-;; 	  (setf surface (insert-knot surface u :u-direction t)))
-;;     (with-accessors ((knots knot-vectors)
-;; 		     (net control-net))
-;; 	surface
-;;       (let* ((main-knots (first knots))
-;; 	     (k1 (1+ (position u main-knots :from-end t)))
-;; 	     (k2 (position u main-knots))
-;; 	     (new-knots-1 (list (concatenate 'vector
-;; 					     (subseq main-knots 0 k1) (list u))
-;; 				(second knots)))
-;; 	     (new-knots-2 (list (concatenate 'vector
-;; 					     (list u) (subseq main-knots k2))
-;; 				(second knots))))
-;; 	(list (make-bspline-surface (copy-list degrees)
-;; 				    new-knots-1
-;; 				    (subarray-2d net 0 0
-;; 						 (- k1 (first degrees)) nil))
-;; 	      (make-bspline-surface (copy-list degrees)
-;; 				    new-knots-2
-;; 				    (subarray-2d net (1- k2) 0 nil nil)))))))
+(defun bss-split-surface-u (surface u)
+  (let ((degrees (degrees surface)))
+    (iter (repeat (- (first degrees)
+		     (count u (first (knot-vectors surface)))))
+	  (setf surface (bss-insert-knot surface u :u-direction t)))
+    (with-accessors ((knots knot-vectors)
+		     (net control-net))
+	surface
+      (let* ((main-knots (first knots))
+	     (k1 (1+ (position u main-knots :from-end t)))
+	     (k2 (position u main-knots))
+	     (new-knots-1 (list (concatenate 'vector
+					     (subseq main-knots 0 k1) (list u))
+				(second knots)))
+	     (new-knots-2 (list (concatenate 'vector
+					     (list u) (subseq main-knots k2))
+				(second knots))))
+	(list (make-bspline-surface (copy-list degrees) new-knots-1
+				    (subarray-2d net 0 0
+						 (- k1 (first degrees)) nil))
+	      (make-bspline-surface (copy-list degrees) new-knots-2
+				    (subarray-2d net (1- k2) 0 nil nil)))))))
 
-;; (defun split-surface-v (bspline-surface v)
-;;   (let ((surface bspline-surface)
-;; 	(degrees (degrees bspline-surface)))
-;;     (loop repeat (- (second degrees)
-;; 		    (count v (second (knot-vectors bspline-surface)))) do
-;; 	  (setf surface (insert-knot surface v :u-direction nil)))
-;;     (with-accessors ((knots knot-vectors)
-;; 		     (net control-net))
-;; 	surface
-;;       (let* ((main-knots (second knots))
-;; 	     (k1 (1+ (position v main-knots :from-end t)))
-;; 	     (k2 (position v main-knots))
-;; 	     (new-knots-1 (list (first knots)
-;; 				(concatenate 'vector
-;; 					     (subseq main-knots 0 k1)
-;; 					     (list v))))
-;; 	     (new-knots-2 (list (first knots)
-;; 				(concatenate 'vector
-;; 					     (list v)
-;; 					     (subseq main-knots k2)))))
-;; 	(list (make-bspline-surface (copy-list degrees)
-;; 				    new-knots-1
-;; 				    (subarray-2d net 0 0
-;; 						 nil (- k1 (first degrees))))
-;; 	      (make-bspline-surface (copy-list degrees)
-;; 				    new-knots-2
-;; 				    (subarray-2d net 0 (1- k2) nil nil)))))))
+(defun bss-split-surface-v (surface v)
+  (let ((degrees (degrees surface)))
+    (iter (repeat (- (second degrees)
+		     (count v (second (knot-vectors surface)))))
+	  (setf surface (bss-insert-knot surface v :u-direction nil)))
+    (with-accessors ((knots knot-vectors)
+		     (net control-net))
+	surface
+      (let* ((main-knots (second knots))
+	     (k1 (1+ (position v main-knots :from-end t)))
+	     (k2 (position v main-knots))
+	     (new-knots-1 (list (first knots)
+				(concatenate 'vector
+					     (subseq main-knots 0 k1)
+					     (list v))))
+	     (new-knots-2 (list (first knots)
+				(concatenate 'vector
+					     (list v)
+					     (subseq main-knots k2)))))
+	(list (make-bspline-surface (copy-list degrees) new-knots-1
+				    (subarray-2d net 0 0
+						 nil (- k1 (first degrees))))
+	      (make-bspline-surface (copy-list degrees) new-knots-2
+				    (subarray-2d net 0 (1- k2) nil nil)))))))
 
-;; (defun split-surface (bspline-surface uv &key (u-direction t))
-;;   (if u-direction
-;;       (split-surface-u bspline-surface uv)
-;;       (split-surface-v bspline-surface uv)))
+(defun bss-split-surface (surface uv &key (u-direction t))
+  (if u-direction
+      (bss-split-surface-u surface uv)
+      (bss-split-surface-v surface uv)))
 
-;; (defun subsurface-1 (bspline-surface min max u-dir)
-;;   (cond ((and min max)
-;; 	 (second (split-surface (first (split-surface bspline-surface max
-;; 						      :u-direction u-dir))
-;; 				min :u-direction u-dir)))
-;; 	(min
-;; 	 (second (split-surface bspline-surface min :u-direction u-dir)))
-;; 	(max
-;; 	 (first (split-surface bspline-surface max :u-direction u-dir)))
-;; 	(t
-;; 	 bspline-surface)))
+(defun bss-subsurface-one-direction (surface min max u-dir)
+  (cond ((and min max)
+	 (second (bss-split-surface
+		  (first (bss-split-surface surface max
+					:u-direction u-dir))
+		  min :u-direction u-dir)))
+	(min (second (bss-split-surface surface min :u-direction u-dir)))
+	(max (first (bss-split-surface surface max :u-direction u-dir)))
+	(t surface)))
 
-;; (defun subsurface (bspline-surface min-u min-v max-u max-v)
-;;   (subsurface-1 (subsurface-1 bspline-surface min-u max-u t) min-v max-v nil))
+(defun bss-subsurface (surface min-u min-v max-u max-v)
+  (bss-subsurface-one-direction
+   (bss-subsurface-one-direction surface min-u max-u t)
+   min-v max-v nil))
