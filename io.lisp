@@ -99,7 +99,8 @@ a list of newly created objects."
   (format stream "stroke~%"))
 
 (defun write-ps-curvature-comb (curve stream convert resolution
-				&optional (comb-scale *ps-comb-scale*))
+				&optional (comb-scale *ps-comb-scale*)
+				show-knots-p)
   (format stream "newpath~% 0.0 0.0 0.0 setrgbcolor~%")
   (iter (with upper = (bsc-upper-parameter curve))
 	(with lower = (bsc-lower-parameter curve))
@@ -109,9 +110,15 @@ a list of newly created objects."
 	(for begin = (funcall convert (bsc-evaluate curve u)))
 	(for end = (v+ begin (v* (bsc-2d-normal curve u)
 				 (bsc-curvature curve u) comb-scale)))
+	(for knot-p = (and show-knots-p (some (lambda (k) (< (- u step) k u))
+					      (knot-vector curve))))
+	(when knot-p (format stream "stroke~%~
+                                     newpath~% 1.0 0.0 1.0 setrgbcolor~%"))
 	(format stream " ~f ~f moveto~% ~f ~f lineto~% ~f ~f moveto~%"
 		(first begin) (second begin) (first end)
-		(second end) (first begin) (second begin)))
+		(second end) (first begin) (second begin))
+	(when knot-p (format stream "stroke~%~
+                                     newpath~% 0.0 0.0 0.0 setrgbcolor~%")))
   (format stream "stroke~%"))
 
 (defun write-ps-target (curve stream convert parameters target
@@ -139,7 +146,7 @@ a list of newly created objects."
 (defun write-ps (curve filename resolution &key (control-points t)
 		 (bspline t) (curvature-comb t) target-curvature start-curvature
 		 end-curvature (iteration 100) left-right distance blended
-		 scaling margin (comb-scale *ps-comb-scale*))
+		 scaling margin (comb-scale *ps-comb-scale*) show-knots-p)
   (let* ((bbox (bsc-bounding-box curve))
 	 (width (- (caadr bbox) (caar bbox)))
 	 (height (- (cadadr bbox) (cadar bbox)))
@@ -160,7 +167,8 @@ a list of newly created objects."
 	(when bspline
 	  (write-ps-curve curve s #'convert resolution))
 	(when curvature-comb
-	  (write-ps-curvature-comb curve s #'convert resolution comb-scale))
+	  (write-ps-curvature-comb curve s #'convert resolution comb-scale
+				   show-knots-p))
 	(when (or target-curvature left-right blended)
 	  (let ((lower (bsc-lower-parameter curve))
 		(upper (bsc-upper-parameter curve)))
