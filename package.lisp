@@ -5,8 +5,8 @@
 (defpackage :cl-nurbs
   #+fff (:use :common-lisp :iterate :cffi :fff)
   #-fff (:use :common-lisp :iterate)
-  (:export :vlength :v+ :v- :v* :vnormalize :scalar-product :cross-product
-	   :point-distance :affine-combine :interpolate
+  (:export :vlength :vlength2 :v+ :v- :v* :vnormalize :scalar-product
+	   :cross-product :point-distance :affine-combine :interpolate
            ;; B-Spline Curves
 	   :make-bspline-curve :copy-bspline-curve
 	   :degree :knot-vector :control-points

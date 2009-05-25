@@ -18,6 +18,9 @@
 (defun vlength (u)
   (sqrt (apply #'+ (mapcar #'(lambda (x) (* x x)) u))))
 
+(defun vlength2 (u)
+  (apply #'+ (mapcar #'(lambda (x) (* x x)) u)))
+
 (defun v+ (&rest u)
   (apply #'mapcar #'+ u))
 
