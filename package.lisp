@@ -47,6 +47,7 @@
 	   :write-bss
 	   :write-ps
 	   :write-pts :read-pts
+	   :write-points2-pts
 	   :write-vtk
 	   :write-points-vtk
 	   :write-points2-vtk))
