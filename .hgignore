@@ -1,0 +1,9 @@
+syntax: glob
+
+*~
+.\#*
+lib*.so
+*.fasl
+fff*
+# Rule out directories
+*/*
