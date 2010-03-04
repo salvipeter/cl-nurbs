@@ -38,3 +38,10 @@ The array should contain lists. NIL arguments mean extreme values."
 		  (setf (aref result (- i min1) (- j min2))
 			(copy-list (aref array i j)))))
       result)))
+
+
+(asdf:oos 'asdf:load-op 'trivial-shell)
+(defun sfview (surface-or-list)
+  (write-rbn surface-or-list "/tmp/ntest-sfview.rbn")
+  (trivial-shell:shell-command "sfview /tmp/ntest-sfview.rbn")
+  t)
