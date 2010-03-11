@@ -8,7 +8,7 @@
   (:export :vlength :vlength2 :v+ :v- :v* :vnormalize :scalar-product
 	   :cross-product :point-distance :affine-combine :interpolate
            ;; B-Spline Curves
-	   :make-bspline-curve :copy-bspline-curve
+	   :bspline-curve :make-bspline-curve :copy-bspline-curve
 	   :degree :knot-vector :control-points
 	   :bsc-dimension
 	   :bsc-lower-parameter :bsc-upper-parameter
@@ -26,7 +26,7 @@
 	   :bsc-continuous-point :bsc-continuous-curve
 	   :bsc-extrude
 	   ;; B-Spline Surfaces
-	   :make-bspline-surface :copy-bspline-surface
+	   :bspline-surface :make-bspline-surface :copy-bspline-surface
 	   :degrees :knot-vectors :control-net
 	   :bss-lower-parameter :bss-upper-parameter
 	   :bss-bounding-box
