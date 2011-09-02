@@ -31,7 +31,7 @@
   (mapcar #'(lambda (x) (apply #'* x scale)) u))
 
 (defun vnormalize (u)
-  (v* u (safe-/ 1.0 (vlength u))))
+  (v* u (safe-/ 1.0d0 (vlength u))))
 
 (defun scalar-product (u v)
   (apply #'+ (mapcar #'* u v)))
