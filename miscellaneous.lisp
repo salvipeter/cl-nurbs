@@ -235,6 +235,18 @@
 (defun angle (v w)
   (acos (scalar-product (vnormalize v) (vnormalize w))))
 
+(defun rbn->simplified (infile outfile)
+  "A simpler version of the B-spline surface file format."
+  (let* ((surface (first (read-rbn infile)))
+	  (points (control-net surface)))
+    (with-open-file (s outfile :direction :output :if-exists :supersede)
+      (format s "~{~d~^ ~}~@
+                 ~{~{~f~^ ~}~%~}~
+                 ~{~{~f~^ ~}~%~}"
+	      (degrees surface)
+	      (knot-vectors surface)
+	      (iter (for i from 0 below (array-total-size points))
+		    (collect (row-major-aref points i)))))))
 
 
 ;;; Call out to sfview
