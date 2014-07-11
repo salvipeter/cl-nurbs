@@ -15,7 +15,7 @@
 	   :bsc-bounding-box :bsc-bounding-box-axis
 	   :bsc-evaluate :bsc-evaluate-on-parameters
 	   :bsc-2d-normal :bsc-out-direction :bsc-out-direction-on-parameters
-	   :bsc-curvature
+	   :bsc-curvature :bsc-torsion
 	   :bsc-insert-knot
 	   :bsc-split-curve :bsc-subcurve
 	   :bsc-estimate-arc-length :bsc-iterative-arc-length
