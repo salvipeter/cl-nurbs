@@ -150,6 +150,13 @@ sequence of parameters."
 		(expt (vlength d1) 3))
 	(safe-/ (vlength (cross-product d1 d2)) (expt (vlength d1) 3)))))
 
+(defun bsc-torsion (curve u)
+  (let* ((d1 (bsc-evaluate curve u :derivative 1))
+         (d2 (bsc-evaluate curve u :derivative 2))
+         (d3 (bsc-evaluate curve u :derivative 3))
+         (cross (cross-product d1 d2)))
+    (safe-/ (scalar-product cross d3) (vlength2 cross))))
+
 (defun bsc-insert-knot (curve u &optional (repetition 1))
   "Inserts the knot U into the knot vector of CURVE REPETITION times.
 
