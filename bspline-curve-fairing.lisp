@@ -151,6 +151,7 @@ of the real curvature from the target curvature."
 (defun bsc-fair (curve &key (measure #'fairness) (resolution 100)
 		 (target-iteration 100) start-curvature end-curvature
 		 (simplex-iteration 5) (fairing-iteration 5) (lock-endpoints t)
+                 (max-deviation 0.1d0)
 		 (from (bsc-lower-parameter curve))
 		 (to (bsc-upper-parameter curve)))
   "Iterative fairing algorithm using the downhill simplex method.
@@ -177,8 +178,13 @@ TODO: the order of control point fairing should be based on the fairness."
 			 (setf (elt points j) point)
 			 (prog1
 			     (funcall measure new-curve parameters curvatures)
-			   (setf (elt points j) old)))))
+			   (setf (elt points j) old))))
+                     (trim (a b)
+                       (let ((dir (v- b a)))
+                         (v+ a (v* (vnormalize dir)
+                                   (min (vlength dir) max-deviation))))))
 		(setf (elt points j)
-		      (downhill-simplex:minimize
-		       #'fairness-fn (elt points j) simplex-iteration))))))
+		      (trim (elt (control-points curve) j)
+                            (downhill-simplex:minimize
+                             #'fairness-fn (elt points j) simplex-iteration)))))))
     new-curve))
