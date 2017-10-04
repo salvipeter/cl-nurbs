@@ -21,7 +21,9 @@
   (assert (and (integerp degree) (> degree 0)) (degree)
 	  "Degree should be a positive integer, not ~d." degree)
   (let ((kl (length knot-vector))
-	(cl (length control-points)))
+	(cl (if (arrayp control-points)
+                (array-dimension control-points 0)
+                (length control-points))))
     (assert (= kl (+ cl degree 1)) (knot-vector control-points)
 	    "~d /= ~d + ~d + 1~%~
              Knot vector length should be equal~%~
